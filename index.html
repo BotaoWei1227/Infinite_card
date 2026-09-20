@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MYTHIC URL — 知識卡牌對戰</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="noise"></div>
+    <header class="topbar">
+      <a class="brand" href="#"><span class="brand-mark">M</span><span>MYTHIC<span class="muted">://</span>URL</span></a>
+      <nav>
+        <button class="nav-btn active" data-view="forge">鍛造所</button>
+        <button class="nav-btn" data-view="collection">收藏庫 <span id="card-count">0</span></button>
+        <button class="nav-btn" data-view="battle">競技場</button>
+      </nav>
+      <button id="open-settings" class="icon-btn" aria-label="Gemini API 設定">✦ <span>API</span></button>
+    </header>
+
+    <main>
+      <section id="forge" class="view active">
+        <div class="hero">
+          <div class="eyebrow"><i></i> KNOWLEDGE BECOMES POWER</div>
+          <h1>把世界的知識<br /><em>鍛造成傳說。</em></h1>
+          <p>貼上一個維基百科網址。AI 將從文字與影像中提煉出一張獨一無二、戰力總和 100 點的造物卡。</p>
+          <form id="forge-form" class="url-form">
+            <input id="wiki-url" type="url" placeholder="貼上 Wikipedia 網址，例如 https://zh.wikipedia.org/wiki/核武器" required />
+            <button class="primary-btn" type="submit"><span>GENERATE</span><b>→</b></button>
+          </form>
+          <div class="forge-notes"><span>✦ Gemini 驅動的卡牌文案</span><span>◉ 自動抓取維基圖片</span><span>100 固定戰力配點</span></div>
+        </div>
+        <aside class="forge-preview">
+          <div class="scanning"><span></span></div>
+          <p class="preview-label">PREVIEW / 001</p>
+          <div id="preview-card" class="card card-ghost">
+            <div class="card-image"><span>等待資料訊號</span></div>
+            <div class="card-content"><div class="card-kicker">UNCLASSIFIED</div><h3>你的下一張傳說</h3><p>來自人類知識庫的未知力量</p></div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="collection" class="view">
+        <div class="section-heading"><div><div class="eyebrow"><i></i> PERSONAL ARCHIVE</div><h2>我的收藏庫</h2></div><p>選取至多四張卡，組成你的出戰牌組。</p></div>
+        <div id="collection-grid" class="card-grid"></div>
+        <div id="empty-collection" class="empty-state">尚未有卡牌。前往「鍛造所」貼上第一個維基百科網址。</div>
+      </section>
+
+      <section id="battle" class="view">
+        <div class="arena-top"><div><div class="eyebrow"><i></i> THE KNOWLEDGE ARENA</div><h2>四卡競技場</h2></div><div id="deck-meter" class="deck-meter">選擇 <strong>0</strong> / 4 張卡牌</div><button id="start-battle" class="primary-btn" disabled><span>開始對決</span><b>→</b></button></div>
+        <div id="battle-setup" class="battle-setup"><div><h3>組建你的牌組，迎戰 AI</h3><p>從收藏庫選四張卡。AI 對手會依據你的戰力組成應對牌組，並以四個回合結算攻擊、防禦、治療與特殊效果。</p></div><button class="secondary-btn" data-view="collection">前往選卡 →</button></div>
+        <div id="battle-board" class="battle-board hidden"></div>
+      </section>
+    </main>
+
+    <dialog id="settings-dialog">
+      <form method="dialog" class="settings-card">
+        <button class="close-btn" value="cancel">×</button>
+        <div class="eyebrow"><i></i> CONNECTION</div><h2>Gemini API 設定</h2>
+        <p>你的金鑰只會儲存在這台裝置的瀏覽器中，直接用於生成卡牌。</p>
+        <label>Gemini API Key <input id="api-key" type="password" placeholder="AIza..." /></label>
+        <label>模型 <input id="model-name" value="gemini-2.5-flash" /></label>
+        <div class="settings-actions">
+          <button id="test-settings" type="button" class="secondary-btn">測試連線</button>
+          <button id="save-settings" type="button" class="primary-btn"><span>儲存設定</span><b>✓</b></button>
+        </div>
+        <p id="api-status" class="api-status" role="status" aria-live="polite"></p>
+        <small>沒有 API key 也可以使用內建規則產生卡牌。</small>
+      </form>
+    </dialog>
+    <template id="card-template">
+      <article class="card"><div class="card-topline"><span class="rarity"></span><span class="card-id"></span></div><div class="card-image"></div><div class="card-content"><div class="card-kicker"></div><h3></h3><p class="flavor"></p><div class="stats"><div><b class="attack"></b><span>攻擊</span></div><div><b class="heal"></b><span>治療</span></div><div><b class="defense"></b><span>防禦</span></div><div><b class="special"></b><span>特殊</span></div></div><div class="ability"><span>✦</span><p></p></div></div><button class="select-card">選取</button></article>
+    </template>
+    <script src="./app.js"></script>
+  </body>
+</html>
